@@ -3,7 +3,7 @@
   <title>Adblocking</title>
  </head>
  <body>
-  <h1>Townsend Home Network</h1><h2>Adblocking</h2>
+  <h1><a href="/">Townsend Home Network</a></h1><h2>Adblocking</h2>
 <?php
 $allowfn="/var/www/html/configinfo/adblock.allow";
 $instructionfn="/var/www/html/configinfo/stuff_to_do";
