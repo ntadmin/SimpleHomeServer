@@ -22,7 +22,7 @@ wget=/usr/bin/wget
 
 
 # Do the work
-tmpfile=/tmp/adblocklist.pre
+tmpfile=/var/www/html/configinfo/adblocklist.pre
 
 # Get the source file
 $wget --no-check-certificate -q $list_src_url -O $tmpfile
@@ -38,7 +38,7 @@ done <$allow_file
 # Get a timestamp for the bind DNS file serial number
 timestamp=`date +"%y%m%d%H%M"`
 
-tmpfile2=/tmp/db.adblock.new
+tmpfile2=/var/www/html/configinfo/db.adblock.new
 
 # Start the bind DNS info file for adblocked sites
 cat > $tmpfile2 << EOM
@@ -59,14 +59,14 @@ EOM
 sed -n -e '/^0.0.0.0/p' $tmpfile | sed s/"0.0.0.0 "// | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
 
 #
-# And now the bit that needs root access
+# And now the bit that needs root access, which has been explicitly allowed in sudoers for these exact commands only
 #
 
 # Put the file in the right place
-mv $tmpfile2 $bind_adblock_file
+sudo /bin/mv $tmpfile2 $bind_adblock_file
 
 # And tell bind to reread the information
-systemctl restart bind9
+sudo /bin/systemctl restart bind9
 
 # Clean up
 rm $tmpfile

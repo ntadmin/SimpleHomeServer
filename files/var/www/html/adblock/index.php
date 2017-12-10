@@ -15,12 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     fwrite($handle, $text_to_write);
     fclose($handle);
 
-    $handle = fopen($instructionfn, "a");
-    if ($handle) {
-      fwrite($handle, "udpate_adblock\n");
-      $list_updated=true;
-      fclose($handle);
-    }
+    exec('get_adblock_list 2>&1', $output);
+    $list_updated=true;
   }
 }
 ?>
@@ -28,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php
 if ($list_updated) {
   echo "<i>List updated - please allow time for changes to take effect</i><p>\n";
+  print_r($output);
+  echo "<p>";
 }
 ?>Adblocking is on by default. The allowed sites are:<p>
   <form method="post">

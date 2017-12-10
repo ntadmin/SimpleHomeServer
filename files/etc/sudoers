@@ -1,0 +1,40 @@
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+
+#
+# Allow the web to do certain, very limited, things
+# The first line www-data to do sudo, in priciple, witha password prompt.
+# The following lines exempt it from passwords for specific commands
+www-data ALL=(ALL) ALL
+www-data ALL=(root) NOPASSWD: /bin/systemctl restart bind9
+www-data ALL=(root) NOPASSWD: /bin/mv /var/www/html/configinfo/db.adblock.new /etc/bind/zones/db.adblock
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+
+
