@@ -3,6 +3,15 @@ SimpleHomeServer
 A collection of files I use to run some core home netwrok stuff on an old PC
 
 Packages you will need (perhaps not exclusive)
-
+----------------------------------------------
 apt-get install apache2 php7.1 bind9
+
+Files to install
+----------------
+Duplicate the files provided but think about ownership etc:
+ - Things in bin directories should be root owned
+ - Thinks in www directory should be owned by the apache user
+
+
+
 
