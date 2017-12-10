@@ -7,6 +7,7 @@
    <h1>Townsend Home Network</h1>
    <h2>Services</h2>
     <a href="adblock">Adblocking</a><p>
+    <a href="dhcp">DHCP</a><p>
    <h2>Devices Currently Used</h2>
     <a href="http://192.168.1.50">Cisco SPA232D</a><p>
     <a href="http://192.168.1.51">FreePBx (Raspberry pi)</a><p>
