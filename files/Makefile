@@ -12,9 +12,9 @@ install:
 	$(CHMOD) 440 /etc/sudoers
 	$(CP) etc/bind/zones/db.* /etc/bind/zones
 	$(CHOWN) root:root /etc/bind/zones/*
-	$(CP) etc/bind/zones/named.conf.local /etc/bind
+	$(CP) etc/bind/named.conf.local /etc/bind
 	$(CHOWN) root:root /etc/bind/named.conf.local
-	$(CP) etc/bind/zones/named.conf.options /etc/bind
+	$(CP) etc/bind/named.conf.options /etc/bind
 	$(CHOWN) root:root /etc/bind/named.conf.options
 
 
