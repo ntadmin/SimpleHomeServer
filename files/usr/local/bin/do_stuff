@@ -1,0 +1,30 @@
+#!/bin/bash
+
+instruction_file=/var/www/html/configinfo/stuff_to_do
+log_file=/var/log/do_stuff.log
+
+function log {
+    ts=`/bin/date -Ins`
+    echo $ts: Processing $* >> $log_file
+}
+
+#If there's nothing to process, then bail.
+if [ ! -f $instruction_file ]; then
+    exit
+fi
+
+#Process instructions
+while read LINE
+do
+    if [ "x$LINE" = "xupdate_adblock" ]; then
+        log "Adblock Update"
+        /usr/local/bin/get_adblock_list
+    else
+        log "Unknown request: $LINE"
+    fi
+done < $instruction_file
+
+rm $instruction_file
+
+
+

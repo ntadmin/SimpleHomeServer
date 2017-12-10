@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# Create a file (set by $1) to contain the latest information from
+# yoyo for adblocking in /etc/hosts format using the IP from
+# ad_catcher_ip in nvram (defaults to 198.168.100.1).
+# If ad_blocking isn't enabled the file will be balnk.
+#
+PATH=/bin:/sbin:/usr/bin:/usr/sbin/:/usr/local/bin
+
+
+# Where the list comes from
+list_src_url='https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts'
+# File with list of allowed adverising sites
+allow_file=/var/www/html/configinfo/adblock.allow
+# The file for the bind info
+bind_adblock_file=/etc/bind/zones/db.adblock
+# The IP address of the web server which will serve empty ads (ie this machine)
+adblock_catcher_ip="192.168.1.246"
+# Where to find wget
+wget=/usr/bin/wget
+
+
+
+# Do the work
+tmpfile=/tmp/adblocklist.pre
+
+# Get the source file
+$wget --no-check-certificate -q $list_src_url -O $tmpfile
+
+
+# Remove hosts we want to let through from the ban list
+while read line; do
+    if [ "x$line" != "x" ]; then
+        sed -i "/$line/d" $tmpfile
+    fi
+done <$allow_file
+
+# Get a timestamp for the bind DNS file serial number
+timestamp=`date +"%y%m%d%H%M"`
+
+tmpfile2=/tmp/db.adblock.new
+
+# Start the bind DNS info file for adblocked sites
+cat > $tmpfile2 << EOM
+\$TTL 60
+@            IN    SOA  localhost. root.localhost.  (
+                          $timestamp   ; serial
+                          1h           ; refresh
+                          30m          ; retry
+                          1w           ; expiry
+                          30m)         ; minimum
+                   IN     NS    localhost.
+
+localhost A 127.0.0.1
+
+EOM
+
+# Select only the lines beginning with '0.0.0.0' and then replace that with the IP we are using.
+sed -n -e '/^0.0.0.0/p' $tmpfile | sed s/"0.0.0.0 "// | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
+
+#
+# And now the bit that needs root access
+#
+
+# Put the file in the right place
+mv $tmpfile2 $bind_adblock_file
+
+# And tell bind to reread the information
+systemctl restart bind9
+
+# Clean up
+rm $tmpfile
