@@ -1,0 +1,8 @@
+SimpleHomeServer
+
+A collection of files I use to run some core home netwrok stuff on an old PC
+
+Packages you will need (perhaps not exclusive)
+
+apt-get install apache2 php7.1 bind9
+
