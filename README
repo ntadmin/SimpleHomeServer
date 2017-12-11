@@ -3,12 +3,12 @@ SimpleHomeServer
 A collection of files I use to run some core home netwrok stuff on an old PC.
 
 I want the router provided by my ISP to only do the things it has to. Everything
-I can remove (DNS, DHCP, adblocking ...) I am aiming to put on this machine.
+I can remove (DNS, DDNS, DHCP, adblocking ...) I am aiming to put on this machine.
 
 This assumes that you have set the PC up as working linux (ubuntu in my case)
 server and that it has been given a fixed IP on a local network. It provides
-some code and sample config files for running DNS (with adblocking) and DHCP.
-Adapt to suit.
+some code and sample config files for running DNS (with adblocking), DDNS and
+DHCP. Adapt to suit.
 
 You will need to have installed all thje relevant packages, including apache2
 and php7.1
