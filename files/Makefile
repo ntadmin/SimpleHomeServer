@@ -16,6 +16,8 @@ install:
 	$(CHOWN) root:root /etc/bind/named.conf.local
 	$(CP) etc/bind/named.conf.options /etc/bind
 	$(CHOWN) root:root /etc/bind/named.conf.options
+	$(CP) etc/inadyn.conf /etc
+	$(CHOWN) root:root /etc/inadyn.conf
 	$(CP) etc/init.d/inadyn /etc/init.d
 	$(CHOWN) root:root /etc/init.d/inadyn
 
