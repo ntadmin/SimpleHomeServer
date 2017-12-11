@@ -246,8 +246,8 @@ report_dataset = select_active_leases(leases, now)
 #print('| IP Address      | MAC Address       | Expires (days,H:M:S) | Client Hostname ')
 #print('+-----------------+-------------------+----------------------+-----------------')
 
-print('Total active leases: ' + str(len(report_dataset)) + '<p>')
-print('<table class="tg">')
+print('<h2>Total active leases: ' + str(len(report_dataset)) + '</h2>')
+print('<table>')
 print('<tr><th>IP Address</th><th>Client Hostname</th><th>Expires (days,H:M:S)</th><th>MAC Address</th></tr>')
 
 
