@@ -18,6 +18,8 @@ install:
 	$(CHOWN) root:root /etc/bind/named.conf.options
 	$(CP) etc/init.d/inadyn /etc/init.d
 	$(CHOWN) root:root /etc/init.d/inadyn
+	$(CP) etc/dhcp/dhcpd.conf /etc/dhcp
+	$(CHOWN) root:root /etc/dhcp/dhcpd.conf
 
 
 
