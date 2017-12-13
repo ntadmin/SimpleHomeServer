@@ -20,6 +20,8 @@ install:
 	$(CHOWN) root:root /etc/init.d/inadyn
 	$(CP) etc/dhcp/dhcpd.conf /etc/dhcp
 	$(CHOWN) root:root /etc/dhcp/dhcpd.conf
+	$(CP) etc/ntp.conf /etc
+	$(CHOWN) root:root /etc/ntp.conf
 
 
 
