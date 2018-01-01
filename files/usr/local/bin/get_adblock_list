@@ -20,20 +20,22 @@ adblock_catcher_ip="192.168.1.246"
 wget=/usr/bin/wget
 
 
-
 # Do the work
-tmpfile=/var/www/html/configinfo/adblocklist.pre
+tmpfilepre=/var/www/html/configinfo/adblocklist.pre
+tmpfileallow=/var/www/html/configinfo/adblocklist.allow
+
+# De window allow file
+tr -d '\r' < $allow_file > $tmpfileallow
 
 # Get the source file
-$wget --no-check-certificate -q $list_src_url -O $tmpfile
-
+$wget --no-check-certificate -q $list_src_url -O $tmpfilepre
 
 # Remove hosts we want to let through from the ban list
-while read line; do
+while IFS= read -r line; do
     if [ "x$line" != "x" ]; then
-        sed -i "/$line/d" $tmpfile
+        sed -i "/$line/d" $tmpfilepre
     fi
-done <$allow_file
+done <$tmpfileallow
 
 # Get a timestamp for the bind DNS file serial number
 timestamp=`date +"%y%m%d%H%M"`
@@ -56,7 +58,7 @@ localhost A 127.0.0.1
 EOM
 
 # Select only the lines beginning with '0.0.0.0' and then replace that with the IP we are using.
-sed -n -e '/^0.0.0.0/p' $tmpfile | sed s/"0.0.0.0 "// | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
+sed -n -e '/^0.0.0.0/p' $tmpfilepre | sed s/"0.0.0.0 "// | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
 
 #
 # And now the bit that needs root access, which has been explicitly allowed in sudoers for these exact commands only
@@ -69,4 +71,5 @@ sudo /bin/mv $tmpfile2 $bind_adblock_file
 sudo /bin/systemctl restart bind9
 
 # Clean up
-rm $tmpfile
+rm $tmpfilepre
+rm $tmpfileallow
