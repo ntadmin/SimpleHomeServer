@@ -21,6 +21,7 @@ wget=/usr/bin/wget
 
 
 # Do the work
+tmpfilesrc=/var/www/html/configinfo/adblocklist.src
 tmpfilepre=/var/www/html/configinfo/adblocklist.pre
 tmpfileallow=/var/www/html/configinfo/adblocklist.allow
 
@@ -29,7 +30,14 @@ tmpfileallow=/var/www/html/configinfo/adblocklist.allow
 tr -d '\r' < $allow_file > $tmpfileallow
 
 # Get the source file
-$wget --no-check-certificate -q $list_src_url -O $tmpfilepre
+$wget --no-check-certificate -q $list_src_url -O $tmpfilesrc
+
+# Only retain lines that begin with "0.0.0.0" and remove trailing comments
+sed -n -e '/^0.0.0.0/p' $tmpfilesrc | cut -d' ' -f-2 > $tmpfilepre
+rm $tmpfilesrc
+
+# Remove comments
+#sed -n -i -e 's/\(.*[^!]\)#.*[^}]/\1/' $tmpfilepre
 
 # Remove hosts we want to let through from the ban list
 while IFS= read -r line; do
@@ -58,8 +66,8 @@ localhost A 127.0.0.1
 
 EOM
 
-# Select only the lines beginning with '0.0.0.0' and then replace that with the IP we are using.
-sed -n -e '/^0.0.0.0/p' $tmpfilepre | sed s/"0.0.0.0 "// | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
+# Replace the leading '0.0.0.0' with a trailing address that with the IP we are using.
+cat $tmpfilepre | sed -n -e s/"0.0.0.0 "//p | sed s/$/" A $adblock_catcher_ip"/ >> $tmpfile2
 
 #
 # And now the bit that needs root access, which has been explicitly allowed in sudoers for these exact commands only
@@ -72,5 +80,5 @@ sudo /bin/mv $tmpfile2 $bind_adblock_file
 sudo /bin/systemctl restart bind9
 
 # Clean up
-rm $tmpfilepre
+#rm $tmpfilepre
 rm $tmpfileallow
