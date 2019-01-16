@@ -22,7 +22,7 @@
       <div id="menubar">
         <ul id="menu">
 <?php
-$pages=array("home" => array("name" => "Home", "URL" => "/home/index.php"),
+$pages=array("devices" => array("name" => "Devices", "URL" => "/devices/index.php"),
              "dhcp" => array("name" => "DHCP", "URL" => "/dhcp/index.php"),
              "adblock" => array("name" => "AdBlock", "URL" => "/adblock/index.php"));
 foreach ($pages as $key => $page) {
