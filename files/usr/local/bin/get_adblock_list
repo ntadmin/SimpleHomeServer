@@ -24,6 +24,7 @@ wget=/usr/bin/wget
 tmpfilepre=/var/www/html/configinfo/adblocklist.pre
 tmpfileallow=/var/www/html/configinfo/adblocklist.allow
 
+
 # De window allow file
 tr -d '\r' < $allow_file > $tmpfileallow
 
