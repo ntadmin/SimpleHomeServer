@@ -1,1 +1,4 @@
 This directory is used by various config and on the fly files.
+
+It sgtarts with an example adblock.allow file which lists the
+sites which you wish to allow even though they are listed as advertising sites.
